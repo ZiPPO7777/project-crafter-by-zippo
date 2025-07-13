@@ -5,6 +5,8 @@ import { TechStackSelector } from './TechStackSelector';
 import { FileTree } from './FileTree';
 import { FileEditor } from './FileEditor';
 import { ProjectControls } from './ProjectControls';
+import { MasterPrompting } from './MasterPrompting';
+import { ProjectPlanning } from './ProjectPlanning';
 import { generateProjectZip } from '../utils/zipGenerator';
 import { useToast } from '../hooks/use-toast';
 
@@ -220,6 +222,19 @@ export const ProjectGenerator: React.FC = () => {
           onProjectNameChange={handleProjectNameChange}
         />
 
+        {/* Master Prompting Chat */}
+        <div className="mb-8">
+          <MasterPrompting 
+            onProjectSuggestion={(suggestion) => {
+              // Handle project suggestions from AI
+              toast({
+                title: "AI Suggestion Applied",
+                description: `Applied suggestions for ${suggestion.name}`,
+              });
+            }}
+          />
+        </div>
+
         {/* Tech Stack Selection */}
         <div className="mb-8">
           <TechStackSelector
@@ -228,6 +243,16 @@ export const ProjectGenerator: React.FC = () => {
             techStacks={TECH_STACKS}
           />
         </div>
+
+        {/* Project Planning Dashboard */}
+        {selectedTechStack && (
+          <div className="mb-8">
+            <ProjectPlanning 
+              projectName={projectConfig.name}
+              techStack={selectedTechStack.name}
+            />
+          </div>
+        )}
 
         {/* Main Content */}
         {selectedTechStack && (
