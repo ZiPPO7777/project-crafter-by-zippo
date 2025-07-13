@@ -2,41 +2,65 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Multi-Tech Project Generator - Dark Theme Design System */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Dark theme primary colors */
+    --background: 220 13% 9%;
+    --foreground: 220 13% 91%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 220 13% 11%;
+    --card-foreground: 220 13% 91%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 220 13% 11%;
+    --popover-foreground: 220 13% 91%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Tech-focused accent colors */
+    --primary: 142 76% 36%;
+    --primary-foreground: 220 13% 9%;
+    --primary-glow: 142 76% 50%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 13% 16%;
+    --secondary-foreground: 220 13% 91%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 13% 16%;
+    --muted-foreground: 220 9% 55%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 217 91% 60%;
+    --accent-foreground: 220 13% 9%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 220 13% 91%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 220 13% 20%;
+    --input: 220 13% 16%;
+    --ring: 142 76% 36%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Custom gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 50%));
+    --gradient-secondary: linear-gradient(135deg, hsl(220 13% 16%), hsl(220 13% 20%));
+    --gradient-accent: linear-gradient(135deg, hsl(217 91% 60%), hsl(217 91% 70%));
+    
+    /* Tree view colors */
+    --tree-line: 220 13% 25%;
+    --tree-hover: 220 13% 18%;
+    --tree-selected: 142 76% 36%;
+    
+    /* Editor colors */
+    --editor-bg: 220 13% 8%;
+    --editor-border: 220 13% 18%;
+    --editor-selection: 142 76% 36%;
+
+    /* Shadows */
+    --shadow-lg: 0 10px 25px -3px hsl(220 13% 5% / 0.3);
+    --shadow-glow: 0 0 20px hsl(142 76% 36% / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s ease-out;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +124,77 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-mono;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', 'Consolas', monospace;
+  }
+}
+
+@layer components {
+  /* Tree View Styles */
+  .tree-node {
+    @apply relative cursor-pointer hover:bg-[hsl(var(--tree-hover))] transition-all duration-200 rounded-lg px-2 py-1;
+  }
+  
+  .tree-node.selected {
+    @apply bg-[hsl(var(--tree-selected))] bg-opacity-20 border-l-2 border-[hsl(var(--tree-selected))];
+  }
+  
+  .tree-line {
+    @apply absolute left-0 top-0 bottom-0 w-px bg-[hsl(var(--tree-line))];
+  }
+  
+  /* Editor Styles */
+  .code-editor {
+    @apply bg-[hsl(var(--editor-bg))] border border-[hsl(var(--editor-border))] rounded-lg font-mono text-sm leading-relaxed;
+  }
+  
+  .code-editor:focus {
+    @apply outline-none ring-2 ring-[hsl(var(--editor-selection))] ring-opacity-50;
+  }
+  
+  /* Gradient Buttons */
+  .btn-gradient-primary {
+    background: var(--gradient-primary);
+    @apply text-primary-foreground font-semibold shadow-lg hover:shadow-[var(--shadow-glow)] transition-all duration-300;
+  }
+  
+  .btn-gradient-accent {
+    background: var(--gradient-accent);
+    @apply text-accent-foreground font-semibold shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+  
+  /* Animations */
+  .fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .glow-effect {
+    box-shadow: var(--shadow-glow);
   }
 }
