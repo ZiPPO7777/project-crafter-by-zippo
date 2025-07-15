@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -166,66 +165,66 @@ Based on your answers, I can recommend the perfect tech stack and create a detai
   };
 
   return (
-    <Card className="h-[600px] flex flex-col">
-      <CardHeader className="pb-3">
-        <CardTitle className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-primary" />
+    <Card className="h-96 flex flex-col max-w-2xl mx-auto">
+      <CardHeader className="pb-2 px-4 pt-4">
+        <CardTitle className="flex items-center gap-2 text-lg">
+          <Sparkles className="h-4 w-4 text-primary" />
           Master Prompting - AI Project Planner
-          <Badge variant="secondary" className="ml-auto">
+          <Badge variant="secondary" className="ml-auto text-xs">
             <Bot className="h-3 w-3 mr-1" />
             AI Powered
           </Badge>
         </CardTitle>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-xs text-muted-foreground">
           Describe your project idea and get personalized tech stack recommendations
         </p>
       </CardHeader>
 
       <Separator />
 
-      <CardContent className="flex-1 flex flex-col p-0">
+      <CardContent className="flex-1 flex flex-col p-0 min-h-0">
         {/* Quick Prompts */}
-        <div className="p-4 border-b">
+        <div className="p-3 border-b">
           <p className="text-xs text-muted-foreground mb-2 flex items-center gap-1">
             <Lightbulb className="h-3 w-3" />
             Quick Start Ideas:
           </p>
-          <div className="flex flex-wrap gap-2">
-            {quickPrompts.map((prompt, index) => (
+          <div className="flex flex-wrap gap-1">
+            {quickPrompts.slice(0, 3).map((prompt, index) => (
               <Button
                 key={index}
                 variant="outline"
                 size="sm"
-                className="text-xs h-7"
+                className="text-xs h-6 px-2"
                 onClick={() => handleQuickPrompt(prompt)}
               >
-                {prompt}
+                {prompt.length > 25 ? prompt.substring(0, 25) + '...' : prompt}
               </Button>
             ))}
           </div>
         </div>
 
         {/* Messages */}
-        <ScrollArea className="flex-1 p-4">
-          <div className="space-y-4">
+        <ScrollArea className="flex-1 p-3">
+          <div className="space-y-3">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex items-start gap-3 ${
+                className={`flex items-start gap-2 ${
                   message.role === 'user' ? 'flex-row-reverse' : ''
                 }`}
               >
                 <div className={`
-                  w-8 h-8 rounded-full flex items-center justify-center text-white text-sm
+                  w-6 h-6 rounded-full flex items-center justify-center text-white text-xs
                   ${message.role === 'user' 
                     ? 'bg-primary' 
                     : 'bg-gradient-to-br from-purple-500 to-pink-500'
                   }
                 `}>
-                  {message.role === 'user' ? <User className="h-4 w-4" /> : <Bot className="h-4 w-4" />}
+                  {message.role === 'user' ? <User className="h-3 w-3" /> : <Bot className="h-3 w-3" />}
                 </div>
                 <div className={`
-                  max-w-[80%] rounded-lg px-3 py-2 text-sm
+                  max-w-[85%] rounded-lg px-2 py-1.5 text-xs
                   ${message.role === 'user'
                     ? 'bg-primary text-primary-foreground'
                     : 'bg-muted'
@@ -233,21 +232,21 @@ Based on your answers, I can recommend the perfect tech stack and create a detai
                 `}>
                   <div className="whitespace-pre-wrap">{message.content}</div>
                   <div className="text-xs opacity-70 mt-1">
-                    {message.timestamp.toLocaleTimeString()}
+                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </div>
                 </div>
               </div>
             ))}
             {isLoading && (
-              <div className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm">
-                  <Bot className="h-4 w-4" />
+              <div className="flex items-start gap-2">
+                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs">
+                  <Bot className="h-3 w-3" />
                 </div>
-                <div className="bg-muted rounded-lg px-3 py-2 text-sm">
+                <div className="bg-muted rounded-lg px-2 py-1.5 text-xs">
                   <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-100" />
-                    <div className="w-2 h-2 bg-primary rounded-full animate-bounce delay-200" />
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce" />
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce delay-100" />
+                    <div className="w-1.5 h-1.5 bg-primary rounded-full animate-bounce delay-200" />
                   </div>
                 </div>
               </div>
@@ -257,7 +256,7 @@ Based on your answers, I can recommend the perfect tech stack and create a detai
         </ScrollArea>
 
         {/* Input */}
-        <div className="p-4 border-t">
+        <div className="p-3 border-t">
           <div className="flex gap-2">
             <Input
               placeholder="Describe your project idea..."
@@ -265,18 +264,19 @@ Based on your answers, I can recommend the perfect tech stack and create a detai
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               disabled={isLoading}
-              className="flex-1"
+              className="flex-1 text-xs h-8"
             />
             <Button 
               onClick={handleSendMessage} 
               disabled={!input.trim() || isLoading}
-              size="icon"
+              size="sm"
+              className="h-8 w-8 p-0"
             >
-              <Send className="h-4 w-4" />
+              <Send className="h-3 w-3" />
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground mt-2 text-center">
-            Press Enter to send • Shift+Enter for new line
+          <p className="text-xs text-muted-foreground mt-1 text-center">
+            Press Enter to send
           </p>
         </div>
       </CardContent>
