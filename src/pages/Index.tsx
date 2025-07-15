@@ -1,3 +1,4 @@
+
 import { ProjectGenerator } from '../components/ProjectGenerator';
 
 const Index = () => {

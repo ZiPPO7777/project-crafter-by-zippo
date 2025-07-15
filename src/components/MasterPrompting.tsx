@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
@@ -5,7 +6,7 @@ import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { Badge } from './ui/badge';
 import { Separator } from './ui/separator';
-import { Send, Bot, User, Sparkles, MessageSquare, Lightbulb } from 'lucide-react';
+import { Send, Bot, User, Sparkles, Lightbulb } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 
 interface Message {
@@ -15,19 +16,7 @@ interface Message {
   timestamp: Date;
 }
 
-interface MasterPromptingProps {
-  onProjectSuggestion: (suggestion: ProjectSuggestion) => void;
-}
-
-interface ProjectSuggestion {
-  name: string;
-  techStack: string;
-  description: string;
-  features: string[];
-  structure?: any;
-}
-
-export const MasterPrompting: React.FC<MasterPromptingProps> = ({ onProjectSuggestion }) => {
+export const MasterPrompting: React.FC = () => {
   const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -49,14 +38,11 @@ export const MasterPrompting: React.FC<MasterPromptingProps> = ({ onProjectSugge
     scrollToBottom();
   }, [messages]);
 
-  // Mock AI responses - In a real app, this would call an API
   const getAIResponse = async (userMessage: string): Promise<string> => {
-    // Simulate API delay
     await new Promise(resolve => setTimeout(resolve, 1500));
-
+    
     const lowerMessage = userMessage.toLowerCase();
     
-    // Project type detection and responses
     if (lowerMessage.includes('e-commerce') || lowerMessage.includes('shop') || lowerMessage.includes('store')) {
       return `Great! An e-commerce project is a fantastic choice. Based on your description, I recommend:
 
@@ -67,20 +53,17 @@ export const MasterPrompting: React.FC<MasterPromptingProps> = ({ onProjectSugge
 - User authentication and profiles
 - Payment integration (Stripe/PayPal)
 - Admin dashboard for inventory management
-- Order tracking and history
 
 **Project Structure**:
 - Frontend: React with TypeScript
 - Backend: Node.js with Express
 - Database: MongoDB or PostgreSQL
-- Authentication: JWT tokens
-- File uploads: Cloudinary/AWS S3
 
-Would you like me to create this project structure for you? Or do you want to discuss any specific features?`;
+Would you like me to create this project structure for you?`;
     }
 
-    if (lowerMessage.includes('blog') || lowerMessage.includes('cms') || lowerMessage.includes('content')) {
-      return `Perfect! A blog/CMS project is an excellent way to showcase content. Here's what I suggest:
+    if (lowerMessage.includes('blog') || lowerMessage.includes('cms')) {
+      return `Perfect! A blog/CMS project is excellent. Here's what I suggest:
 
 **Tech Stack**: Django (Python) - ideal for content management
 **Key Features**:
@@ -91,61 +74,23 @@ Would you like me to create this project structure for you? Or do you want to di
 - SEO optimization
 - Admin panel for content management
 
-**Project Structure**:
-- Django with built-in admin panel
-- PostgreSQL database
-- Bootstrap for responsive design
-- Django REST framework for API
-- Media handling for images
-
 This would give you a professional blog with a powerful admin interface. Shall I generate this structure?`;
     }
 
-    if (lowerMessage.includes('dashboard') || lowerMessage.includes('analytics') || lowerMessage.includes('chart')) {
+    if (lowerMessage.includes('dashboard') || lowerMessage.includes('analytics')) {
       return `Excellent! A dashboard project is perfect for data visualization. Here's my recommendation:
 
 **Tech Stack**: React with modern charting libraries
 **Key Features**:
-- Interactive charts and graphs (Chart.js/Recharts)
+- Interactive charts and graphs
 - Real-time data updates
 - Responsive grid layout
 - Data filtering and export
 - User authentication and permissions
-- API integration for data sources
 
-**Project Structure**:
-- React with TypeScript
-- Recharts for visualizations
-- Node.js backend for API
-- WebSocket for real-time updates
-- MongoDB for data storage
-
-Would you like me to set up this dashboard structure with sample charts and components?`;
+Would you like me to set up this dashboard structure?`;
     }
 
-    if (lowerMessage.includes('portfolio') || lowerMessage.includes('personal website')) {
-      return `A portfolio website is a great way to showcase your skills! Here's what I recommend:
-
-**Tech Stack**: React for modern, interactive design
-**Key Features**:
-- Responsive design with smooth animations
-- Project showcase with live demos
-- About section with skills display
-- Contact form with email integration
-- Blog section for articles
-- Dark/light theme toggle
-
-**Project Structure**:
-- React with TypeScript
-- Modern CSS animations
-- Optimized images and assets
-- Contact form backend
-- SEO optimization
-
-This will create a professional portfolio that stands out. Want me to generate this structure?`;
-    }
-
-    // Generic helpful response
     return `That sounds like an interesting project! To help you better, I need a bit more information:
 
 **Questions to help me assist you**:
@@ -154,11 +99,8 @@ This will create a professional portfolio that stands out. Want me to generate t
 3. What are the main features you want to include?
 4. Do you have any tech stack preferences?
 5. Will this need user authentication?
-6. Do you need a database for data storage?
 
-Based on your answers, I can recommend the perfect tech stack and create a detailed project structure with all the files and code you'll need to get started quickly!
-
-Feel free to describe your project idea in more detail, and I'll provide specific recommendations.`;
+Based on your answers, I can recommend the perfect tech stack and create a detailed project structure!`;
   };
 
   const handleSendMessage = async () => {
@@ -186,11 +128,10 @@ Feel free to describe your project idea in more detail, and I'll provide specifi
 
       setMessages(prev => [...prev, assistantMessage]);
 
-      // Check if the response contains a project suggestion
-      if (aiResponse.includes('**Tech Stack**') || aiResponse.includes('Shall I generate')) {
+      if (aiResponse.includes('**Tech Stack**')) {
         toast({
           title: "Project Plan Ready!",
-          description: "I've analyzed your requirements. You can use the suggested structure below or ask for modifications.",
+          description: "I've analyzed your requirements. You can use the suggested structure below.",
         });
       }
     } catch (error) {
@@ -236,7 +177,7 @@ Feel free to describe your project idea in more detail, and I'll provide specifi
           </Badge>
         </CardTitle>
         <p className="text-sm text-muted-foreground">
-          Describe your project idea and get personalized tech stack recommendations and project structure
+          Describe your project idea and get personalized tech stack recommendations
         </p>
       </CardHeader>
 

@@ -1,8 +1,10 @@
+
 import React from 'react';
-import { TechStack } from '../types/project';
-import { Card, CardContent } from './ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
-import { CheckCircle2 } from 'lucide-react';
+import { Button } from './ui/button';
+import { TechStack } from '../types/project';
+import { Code, Layers } from 'lucide-react';
 
 interface TechStackSelectorProps {
   selectedTechStack: string;
@@ -16,51 +18,56 @@ export const TechStackSelector: React.FC<TechStackSelectorProps> = ({
   techStacks
 }) => {
   return (
-    <div className="fade-in">
-      <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-        <span>Choose Your Tech Stack</span>
-        {selectedTechStack && <CheckCircle2 className="h-6 w-6 text-primary" />}
-      </h2>
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <Layers className="h-5 w-5 text-primary" />
+          Choose Your Tech Stack
+        </CardTitle>
+        <p className="text-sm text-muted-foreground">
+          Select a technology stack to load the appropriate project structure and boilerplate code
+        </p>
+      </CardHeader>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {techStacks.map((techStack) => {
-          const isSelected = selectedTechStack === techStack.id;
-          
-          return (
-            <Card
-              key={techStack.id}
-              className={`cursor-pointer transition-all duration-300 hover:scale-105 ${
-                isSelected 
-                  ? 'ring-2 ring-primary bg-primary/5 border-primary' 
-                  : 'hover:border-primary/50'
+      <CardContent>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {techStacks.map((stack) => (
+            <Button
+              key={stack.id}
+              variant={selectedTechStack === stack.id ? "default" : "outline"}
+              className={`h-auto p-4 flex flex-col items-start gap-2 ${
+                selectedTechStack === stack.id ? 'ring-2 ring-primary' : ''
               }`}
-              onClick={() => onTechStackChange(techStack.id)}
+              onClick={() => onTechStackChange(stack.id)}
             >
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl mb-3">{techStack.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{techStack.name}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {techStack.description}
-                </p>
-                
-                {isSelected && (
-                  <Badge className="mt-3 btn-gradient-primary">
+              <div className="flex items-center gap-2 w-full">
+                <span className="text-2xl">{stack.icon}</span>
+                <span className="font-semibold">{stack.name}</span>
+                {selectedTechStack === stack.id && (
+                  <Badge variant="secondary" className="ml-auto">
                     Selected
                   </Badge>
                 )}
-              </CardContent>
-            </Card>
-          );
-        })}
-      </div>
-      
-      {selectedTechStack && (
-        <div className="mt-6 p-4 bg-secondary rounded-lg border border-primary/20">
-          <p className="text-sm text-muted-foreground text-center">
-            ✨ Great choice! Your project structure is ready to customize below.
-          </p>
+              </div>
+              <p className="text-xs text-left opacity-80">
+                {stack.description}
+              </p>
+            </Button>
+          ))}
         </div>
-      )}
-    </div>
+
+        {selectedTechStack && (
+          <div className="mt-6 p-4 bg-secondary/50 rounded-lg border border-primary/20">
+            <div className="flex items-center gap-2 mb-2">
+              <Code className="h-4 w-4 text-primary" />
+              <span className="font-medium">Tech Stack Loaded</span>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              {techStacks.find(s => s.id === selectedTechStack)?.description}
+            </p>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 };

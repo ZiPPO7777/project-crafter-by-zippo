@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { FileNode } from '../types/project';
 import { File, Edit3, Save, RotateCcw } from 'lucide-react';
@@ -21,7 +22,6 @@ export const FileEditor: React.FC<FileEditorProps> = ({
   const [hasChanges, setHasChanges] = useState(false);
   const [originalContent, setOriginalContent] = useState('');
 
-  // Find selected file recursively
   const findFile = (nodes: FileNode[], fileId: string): FileNode | null => {
     for (const node of nodes) {
       if (node.id === fileId) {
@@ -37,7 +37,6 @@ export const FileEditor: React.FC<FileEditorProps> = ({
 
   const selectedFile = selectedFileId ? findFile(structure, selectedFileId) : null;
 
-  // Update editor content when file selection changes
   useEffect(() => {
     if (selectedFile && selectedFile.type === 'file') {
       const content = selectedFile.content || '';
@@ -47,7 +46,6 @@ export const FileEditor: React.FC<FileEditorProps> = ({
     }
   }, [selectedFile]);
 
-  // Track content changes
   useEffect(() => {
     setHasChanges(editContent !== originalContent);
   }, [editContent, originalContent]);
@@ -78,14 +76,9 @@ export const FileEditor: React.FC<FileEditorProps> = ({
       'tsx': 'typescript',
       'html': 'html',
       'css': 'css',
-      'scss': 'scss',
       'py': 'python',
       'json': 'json',
-      'md': 'markdown',
-      'yml': 'yaml',
-      'yaml': 'yaml',
-      'xml': 'xml',
-      'txt': 'text'
+      'md': 'markdown'
     };
     return langMap[ext] || 'text';
   };
@@ -164,7 +157,7 @@ export const FileEditor: React.FC<FileEditorProps> = ({
             size="sm"
             onClick={handleSave}
             disabled={!hasChanges}
-            className="gap-2 btn-gradient-primary"
+            className="gap-2"
           >
             <Save className="h-4 w-4" />
             Save
@@ -194,7 +187,7 @@ export const FileEditor: React.FC<FileEditorProps> = ({
           id="file-content"
           value={editContent}
           onChange={(e) => setEditContent(e.target.value)}
-          className="flex-1 code-editor font-mono text-sm resize-none min-h-80"
+          className="flex-1 font-mono text-sm resize-none min-h-80"
           placeholder="Enter your code here..."
         />
       </div>
@@ -202,8 +195,7 @@ export const FileEditor: React.FC<FileEditorProps> = ({
       {/* Footer */}
       <div className="mt-4 text-xs text-muted-foreground text-center">
         Lines: {editContent.split('\n').length} | 
-        Characters: {editContent.length} |
-        Words: {editContent.trim().split(/\s+/).filter(w => w).length}
+        Characters: {editContent.length}
       </div>
     </div>
   );

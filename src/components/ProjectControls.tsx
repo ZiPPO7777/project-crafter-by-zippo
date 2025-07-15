@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { TechStack } from '../types/project';
 import { Button } from './ui/button';
@@ -22,14 +23,12 @@ export const ProjectControls: React.FC<ProjectControlsProps> = ({
     <Card className="bg-gradient-to-r from-card to-secondary/50 border border-primary/20">
       <CardContent className="p-8">
         <div className="text-center">
-          {/* Icon and Title */}
           <div className="flex items-center justify-center gap-3 mb-6">
             <Package className="h-8 w-8 text-primary" />
             <h2 className="text-3xl font-bold">Ready to Generate</h2>
             <Sparkles className="h-6 w-6 text-accent animate-pulse" />
           </div>
 
-          {/* Project Summary */}
           <div className="mb-8">
             <p className="text-lg text-muted-foreground mb-4">
               Your project is configured and ready to download
@@ -53,12 +52,11 @@ export const ProjectControls: React.FC<ProjectControlsProps> = ({
             </div>
           </div>
 
-          {/* Generate Button */}
           <Button
             onClick={onGenerate}
             disabled={isGenerating || !projectName.trim()}
             size="lg"
-            className="btn-gradient-primary text-lg px-8 py-6 gap-3 hover:scale-105 transition-all duration-300"
+            className="text-lg px-8 py-6 gap-3 hover:scale-105 transition-all duration-300"
           >
             {isGenerating ? (
               <>
@@ -79,7 +77,6 @@ export const ProjectControls: React.FC<ProjectControlsProps> = ({
             </p>
           )}
 
-          {/* Features List */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
             <div className="flex items-center justify-center gap-2 text-muted-foreground">
               <div className="w-2 h-2 bg-primary rounded-full"></div>
@@ -95,10 +92,9 @@ export const ProjectControls: React.FC<ProjectControlsProps> = ({
             </div>
           </div>
 
-          {/* Instructions */}
           <div className="mt-6 p-4 bg-secondary/50 rounded-lg border border-primary/10">
             <p className="text-sm text-muted-foreground">
-              💡 <strong>Tip:</strong> After downloading, extract the ZIP file and follow the README instructions to get started with your project.
+              💡 <strong>Tip:</strong> After downloading, extract the ZIP file and follow the README instructions.
             </p>
           </div>
         </div>
