@@ -1133,5 +1133,198 @@ Add your project documentation here.
 Customize this structure to fit your needs.`
       }
     ]
+  },
+  {
+    id: 'django',
+    name: 'Django',
+    description: 'Full-stack Python web framework with admin panel',
+    icon: '🎸',
+    structure: [
+      {
+        id: '1',
+        name: 'manage.py',
+        type: 'file',
+        content: `#!/usr/bin/env python
+"""Django's command-line utility for administrative tasks."""
+import os
+import sys
+
+
+def main():
+    """Run administrative tasks."""
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '{{project_name}}.settings')
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise ImportError(
+            "Couldn't import Django. Are you sure it's installed and "
+            "available on your PYTHONPATH environment variable? Did you "
+            "forget to activate a virtual environment?"
+        ) from exc
+    execute_from_command_line(sys.argv)
+
+
+if __name__ == '__main__':
+    main()`
+      },
+      {
+        id: '2',
+        name: '{{project_name}}',
+        type: 'folder',
+        isOpen: true,
+        children: [
+          {
+            id: '3',
+            name: '__init__.py',
+            type: 'file',
+            parentId: '2',
+            content: ''
+          },
+          {
+            id: '4',
+            name: 'settings.py',
+            type: 'file',
+            parentId: '2',
+            content: `"""Django settings for {{PROJECT_NAME}} project."""
+
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+SECRET_KEY = 'django-insecure-change-this-in-production'
+DEBUG = True
+ALLOWED_HOSTS = []
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'main',  # Main app
+]
+
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+ROOT_URLCONF = '{{project_name}}.urls'
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [BASE_DIR / 'templates'],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
+
+WSGI_APPLICATION = '{{project_name}}.wsgi.application'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'UTC'
+USE_I18N = True
+USE_TZ = True
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'`
+          },
+          {
+            id: '5',
+            name: 'urls.py',
+            type: 'file',
+            parentId: '2',
+            content: `"""{{PROJECT_NAME}} URL Configuration"""
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('main.urls')),
+]`
+          }
+        ]
+      },
+      {
+        id: '6',
+        name: 'main',
+        type: 'folder',
+        isOpen: true,
+        children: [
+          {
+            id: '7',
+            name: 'models.py',
+            type: 'file',
+            parentId: '6',
+            content: `from django.db import models
+from django.contrib.auth.models import User
+
+class Post(models.Model):
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title`
+          },
+          {
+            id: '8',
+            name: 'views.py',
+            type: 'file',
+            parentId: '6',
+            content: `from django.shortcuts import render
+from .models import Post
+
+def home(request):
+    posts = Post.objects.all()[:5]
+    return render(request, 'main/home.html', {'posts': posts})`
+          },
+          {
+            id: '9',
+            name: 'urls.py',
+            type: 'file',
+            parentId: '6',
+            content: `from django.urls import path
+from . import views
+
+app_name = 'main'
+urlpatterns = [
+    path('', views.home, name='home'),
+]`
+          }
+        ]
+      },
+      {
+        id: '10',
+        name: 'requirements.txt',
+        type: 'file',
+        content: `Django>=4.2.0,<5.0.0
+Pillow>=9.0.0`
+      }
+    ]
   }
 ];
